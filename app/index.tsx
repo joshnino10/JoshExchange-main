@@ -16,12 +16,13 @@ import {
   View,
   Image,
 } from "react-native";
-import Animated, {
-  FadeInDown,
-  FadeInLeft,
-  FadeInRight,
-  FadeInUp,
-} from "react-native-reanimated";
+// import Animated, {
+//   FadeInDown,
+//   FadeInLeft,
+//   FadeInRight,
+//   FadeInUp,
+// } from "react-native-reanimated";
+import Animated , {FadeInUp, FadeInDown,FadeInLeft,FadeInRight} from "react-native-reanimated";
 
 export default function Index() {
   const router = useRouter();
