@@ -3,7 +3,10 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import {
+  ActivityIndicator,
+  Image,
   KeyboardAvoidingView,
+  Modal,
   Platform,
   Pressable,
   SafeAreaView,
@@ -14,16 +17,16 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  Image,
 } from "react-native";
 
-import Animated , {FadeInUp, FadeInDown,FadeInLeft,FadeInRight} from "react-native-reanimated";
+import Animated, { FadeInDown, FadeInLeft, FadeInRight, FadeInUp } from "react-native-reanimated";
 
 export default function Index() {
   const router = useRouter();
   const { username, setUserName, password, setPassword } = useGlobal();
   const [isSecure, setIsSecure] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = () => {
     setErrorMessage("");
@@ -38,7 +41,12 @@ export default function Index() {
       return;
     }
 
-    router.replace("/home");
+    setIsLoading(true);
+
+    setTimeout(() => {
+      setIsLoading(false);
+      router.replace("/home");
+    }, 3000);
   };
 
   const gotoSignUp = () => {
@@ -52,6 +60,21 @@ export default function Index() {
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle="dark-content" backgroundColor="white" />
+      
+      {/* Loading Modal */}
+      <Modal
+        transparent={true}
+        visible={isLoading}
+        animationType="fade"
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <ActivityIndicator size="large" color="#0000cd" />
+            <Text style={styles.loadingText}>Logging in...</Text>
+          </View>
+        </View>
+      </Modal>
+
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         keyboardVerticalOffset={Platform.OS === "ios" ? 10 : 50}
@@ -260,5 +283,29 @@ const styles = StyleSheet.create({
     color: "gray",
     fontFamily: "Medium",
     textAlign: "center",
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalContent: {
+    backgroundColor: "white",
+    padding: 30,
+    borderRadius: 20,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    minWidth: 150,
+  },
+  loadingText: {
+    marginTop: 15,
+    fontSize: 16,
+    fontFamily: "semiBold",
+    color: "#0000cd",
   },
 });
