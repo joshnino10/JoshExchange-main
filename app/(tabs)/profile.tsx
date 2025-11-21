@@ -18,8 +18,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     paddingTop: Platform.OS === "android"? StatusBar.currentHeight: 0
-
   },
+  
   page:{
     flex: 1,
     paddingHorizontal: 16,
